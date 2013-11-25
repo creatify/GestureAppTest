@@ -4,46 +4,43 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" /> -->
 		<link rel="stylesheet" href="css/styles.css" />
 		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-		<script type="text/javascript" charset="utf-8" src="cordova/cordova.js"></script>
-		<script src="js/hammer.min.js"></script>
-		
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	</head>
 	<body>
-		<div id='toucharea'>
+		<div class='toucharea'>
 			
 		</div>
-		<div id='circle'>
+		<div class='circle'>
 			
 		</div>
 	</body>
+	
 </html>
 
+<script src="js/hammer.min.js"></script>
+
 <script>
+	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
-	var firstRun = true;
-		
 	function onDeviceReady() {
-		if(firstRun) {
-			firstRun = false;
-			setupGestures();			
-		}
+		alert("Device is Ready");
+		console.log("Device Ready");
+		setupGestures();
 	}
 	
 	function setupGestures() {
 		
-		// console.log("setupGestures()");
-		
 		var mXP = null;
 		var mYP = null;
 		var disToFire = 20;
-		// var circ = $('.circle');
-		// var hammertime = $('.toucharea');
-		var circ = document.getElementById('circle');
-		var hammertime = Hammer(document.getElementById("toucharea"));
+		var circ = $('circle');
+		var hammertime = $("toucharea");
 	    
 		hammertime.on("tap", handleTap);
 		hammertime.on("drag", handleDrag);
@@ -78,9 +75,9 @@
 			
 			if(Math.abs(tempXP-mXP) >= disToFire) {
 				if(tempXP-mXP >= 0) {
-					// console.log("M RIGHT"); 
+					console.log("M RIGHT"); 
 				} else {
-					// console.log("M LEFT"); 
+					console.log("M LEFT"); 
 				}
 				
 				mXP = ev.gesture.center.pageX;
@@ -89,14 +86,16 @@
 			if(Math.abs(tempYP-mYP) >= disToFire) {
 				
 				if(tempYP-mYP >= 0) {
-					// console.log("M DOWN"); 
+					console.log("M DOWN"); 
 				} else {
-					// console.log("M UP"); 
+					console.log("M UP"); 
 				}
 				
 				mYP = ev.gesture.center.pageY;
 			}
 		};
-	}
+	}		
 
 </script>
+
+

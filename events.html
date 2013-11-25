@@ -4,59 +4,102 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link rel="stylesheet" href="css/styles.css" />
 		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="cordova/cordova.js"></script>
+		<script src="js/hammer.min.js"></script>
+		
 	</head>
 	<body>
-		<!-- Start of first page I -->
-		<div data-role="page" id="page1">
-			<!-- Header -->
-			<div data-role="header">
-				<h1>Phonegap Template &amp;</h1>
-
-			</div>
-			<!-- /header -->
-			<!-- Content    -->
-			<div data-role="content">
-				<h3>Content</h3>
-				<p>
-					Blah blah blah blah
-				</p>
-			</div>
-			<!-- /content -->
-			<!-- footer -->
-			<div data-role="footer">
-				<h4>&copy; 2013 Your Name</h4>
-			</div>
-			<!-- /footer -->
+		<div id='toucharea'>
+			
 		</div>
-		<!-- /page -->
+		<div id='circle'>
+			
+		</div>
 	</body>
 </html>
 <script>
 	document.addEventListener("deviceready", onDeviceReady, false);
-
+	
+	var firstRun = true;
+		
 	function onDeviceReady() {
-		document.addEventListener("pause", onPause, false);
-		document.addEventListener("resume", onResume, false);
-		alert("Device is Ready");
-
+		if(firstRun) {
+			firstRun = false;
+			alert("Device is Ready");
+			setupGestures();			
+		}
+	}
+	
+	function setupGestures() {
+		
+		console.log("setupGestures()");
+		
+		var mXP = null;
+		var mYP = null;
+		var disToFire = 20;
+		// var circ = $('.circle');
+		// var hammertime = $('.toucharea');
+		var circ = document.getElementById('circle');
+		var hammertime = Hammer(document.getElementById("toucharea"));
+	    
+		hammertime.on("tap", handleTap);
+		hammertime.on("drag", handleDrag);
+		hammertime.on("dragstart", handleDragStart);
+		hammertime.on("dragend", handleDragEnd);
+		
+		console.log("hammertime... ");
+		console.log("hammertime = "+hammertime);
+		
+		// HANDLE ON TAP
+		function handleTap(ev) {
+			if(window.console) { console.log(ev.type); }
+		};
+		
+		// HANDLE DRAG START
+		function handleDragStart(ev) {
+			mXP = ev.gesture.center.pageX;
+			mYP = ev.gesture.center.pageY;
+		};
+		
+		// HANDLE DRAG END
+		function handleDragEnd(ev) {
+			console.log("STOP!!!!!!!!!"); 
+		}
+		
+		// HANDLE ON DRAGGING
+		function handleDrag(ev) {
+			ev.gesture.preventDefault();
+			// ev.stopPropagation();
+			var tempXP = ev.gesture.center.pageX;
+			var tempYP = ev.gesture.center.pageY;
+			
+			circ.style.left = (tempXP-10)+"px";
+			circ.style.top = (tempYP-10)+"px";
+			
+			if(Math.abs(tempXP-mXP) >= disToFire) {
+				if(tempXP-mXP >= 0) {
+					console.log("M RIGHT"); 
+				} else {
+					console.log("M LEFT"); 
+				}
+				
+				mXP = ev.gesture.center.pageX;
+			}
+			
+			if(Math.abs(tempYP-mYP) >= disToFire) {
+				
+				if(tempYP-mYP >= 0) {
+					console.log("M DOWN"); 
+				} else {
+					console.log("M UP"); 
+				}
+				
+				mYP = ev.gesture.center.pageY;
+			}
+		};
 	}
 
-
-//What to do when paused
-function onPause(){
-	
-	alert("paused!");
-}
-
-//What to do when resumed
-function onResume()
-{
-	
-	alert("resume");
-}
 </script>
