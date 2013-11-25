@@ -22,15 +22,13 @@
 </html>
 
 <script>
+	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
 	var firstRun = true;
 		
 	function onDeviceReady() {
-		if(firstRun) {
-			firstRun = false;
-			setupGestures();			
-		}
+		setupGestures();			
 	}
 	
 	function setupGestures() {
